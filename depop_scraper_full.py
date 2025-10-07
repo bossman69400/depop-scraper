@@ -6,7 +6,7 @@ import pandas as pd
 import time
 import re
 
-USERNAME = "methhead"  # <-- Change this to your Depop username!
+USERNAME = "username"  # <-- Change this to your Depop username
 
 def setup_driver():
     chrome_options = Options()
@@ -159,3 +159,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
