@@ -1,7 +1,13 @@
 # app.py
 import streamlit as st
+from typing import List, Dict
 
 st.set_page_config(page_title="Depop → eBay Crosslister", page_icon="👕", layout="centered")
+
+if "drafts" not in st.session_state:
+    st.session_state.drafts: List[Dict] = []
+if "edit_index" not in st.session_state:
+    st.session_state.edit_index = None  # which draft we’re editing
 
 st.title("Depop → eBay Crosslister (Starter)")
 
@@ -19,3 +25,4 @@ if submitted:
     st.json({"title": title, "desc": desc, "price": price, "images_count": len(images) if images else 0})
 
 st.caption("Next: connect real Depop data → edit → publish to eBay AU.")
+
