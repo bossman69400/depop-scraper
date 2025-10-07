@@ -9,20 +9,30 @@ if "drafts" not in st.session_state:
 if "edit_index" not in st.session_state:
     st.session_state.edit_index = None  # which draft we’re editing
 
-st.title("Depop → eBay Crosslister (Starter)")
+st.title("Depop → eBay Crosslister")
+st.subheader("Create a new draft")
 
-st.write("This is a minimal starter. We’ll add editing + eBay API next.")
+with st.form("create_form", clear_on_submit=True):
+    c1, c2 = st.columns([2, 1])
+    with c1:
+        title = st.text_input("Title", "Vintage Nike Tee")
+        desc = st.text_area("Description", "Old school logo, size M")
+    with c2:
+        price = st.number_input("Price (AUD)", min_value=0.0, value=30.0, step=1.0)
+        quantity = st.number_input("Quantity", min_value=1, value=1, step=1)
+    images = st.file_uploader("Images", accept_multiple_files=True)
 
-with st.form("demo_form"):
-    title = st.text_input("Listing title", "Vintage Nike Tee")
-    desc = st.text_area("Description", "Old school logo, size M")
-    price = st.number_input("Price (AUD)", min_value=0.0, value=30.0, step=1.0)
-    images = st.file_uploader("Upload images", accept_multiple_files=True)
-    submitted = st.form_submit_button("Save draft")
+    submitted = st.form_submit_button("Add to drafts")
 
 if submitted:
-    st.success("Draft saved (in memory for now).")
-    st.json({"title": title, "desc": desc, "price": price, "images_count": len(images) if images else 0})
+    new_item = {
+        "title": title.strip(),
+        "desc": desc.strip(),
+        "price": float(price),
+        "quantity": int(quantity),
+        "images": images or [],  # list of UploadedFile objects for now
+    }
+    st.session_state.drafts.append(new_item)
+    st.success("Draft added.")
 
-st.caption("Next: connect real Depop data → edit → publish to eBay AU.")
 
